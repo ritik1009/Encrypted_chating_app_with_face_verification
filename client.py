@@ -31,12 +31,16 @@ def capture():
             break
         elif k % 256 == 32:
             # SPACE pressed
-            scale_height = 10
-            scale_width = 10
+            scale_height = 30
+            scale_width = 30
 
             #calculate the 50 percent of original dimensions
+            print("Width:- ",frame.shape[1])
+            print("Width:- ",frame.shape[0])
             width = int(frame.shape[1] * scale_width / 100)
+            print("Width after:- ",width)
             height = int(frame.shape[0] * scale_height / 100)
+            print("Height after:- ",height)
             capture.img_name = "opencv_frame_{}.png".format(img_counter)
             frame = cv2.resize(frame, (width, height))
             cv2.imwrite(os.path.join('D:\projects\SocketProgramming', capture.img_name), frame)
@@ -93,16 +97,20 @@ class Client:
         option = "login"
         c.send(bytes("\n".join([ver_name, ver_pass, option]), 'utf8'))
         send_capture()
-        face_found = c.recv(5).decode()
-        if face_found == "True":
-            result = c.recv(5).decode()
-            print("face_found", face_found)
-            print("result", result)
-            return result, face_found
+        user_exist = c.recv(5).decode()
+        if user_exist:
+            face_found = c.recv(5).decode()
+            if face_found == "True":
+                result = c.recv(5).decode()
+                print("face_found", face_found)
+                print("result", result)
+                return result, face_found
+            else:
+                result = "False"
+                print(face_found)
+                return result, face_found
         else:
-            result = "False"
-            print(face_found)
-            return result, face_found
+            print("user dont exist")
 
     def exit(self):
         c_name = "  "
@@ -156,52 +164,3 @@ class Client:
         self.my_msg.set("{quit}")
         self.send(self.my_msg)
 
-    #login = tkinter.Button(window,text="LOGIN",command=clicked)
-    # login.grid(column=1,row=4)
-
-
-'''def sing():
-    print("the button is clicked")
-    user_names =  user_name.get()
-    passwords =  password.get()
-    client.sing_up(user_names,passwords)
-    #label2 = tkinter.Label(out)
-    #label2.grid(column=1,row=4) 
-    password.delete(0,'end')
-    user_name.delete(0,'end')
-
-def exit():
-    c_name =""
-    c_password =""
-    option = "exit"
-    c.send(bytes("\n".join([c_name,c_password,option]),'utf8'))    
-
-window = tkinter.Tk()
-window.title("Online Chatting")
-window.geometry('400x400')
-        #window.size(100)
-       
-        #tkinter.configure(text=res)
-label = tkinter.Label(window,text="Login Page",font=("Arial Bold",30))
-label.grid(column=1,row=0)
-
-user_name = tkinter.Entry(window,width=10)
-user_name.grid(column=1,row=1)
-
-
-password = tkinter.Entry(window,width=10)
-password.grid(column=1,row=2)
-
-face_verification = tkinter.Button(window,text="Face Verification",command=capture)
-face_verification.grid(column = 1,row = 3)
-
-singup = tkinter.Button(window,text="SINGUP",command=sing)# fg="red"for foreground and bg="black" for background
-singup.grid(column=1,row=4)
-
-exit = tkinter.Button(window,text="Exit",command=exit)# fg="red"for foreground and bg="black" for background
-exit.grid(column=1,row=5)
-
-
-#window.mainloop()
-
-'''

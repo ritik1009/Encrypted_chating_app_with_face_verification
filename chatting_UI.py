@@ -87,7 +87,6 @@ class PageOne(tk.Frame):
         button.pack()
 
     def sing(self):
-        print("the button is clicked")
         user_names = self.user_name.get()
         passwords =  self.password.get()
         check = cl.sing_up(user_names,passwords)
@@ -96,11 +95,9 @@ class PageOne(tk.Frame):
         self.password.delete(0,'end')
         self.user_name.delete(0,'end')
         if check == "False":
-            print("go to the login Page")
             label_re = tk.Label(self,text="Account Created Succesfully!!")
             label_re.pack()
         else:
-            print("user already exist")
             label_re = tk.Label(self,text="Account Already Exist or taken!!")
             label_re.pack()
 
@@ -137,14 +134,9 @@ class PageTwo(tk.Frame):
         user_names = self.user_name.get()
         passwords =  self.password.get()
         result,face_found = cl.login(user_names,passwords)
-        #label2 = tkinter.Label(out)
-        #label2.grid(column=1,row=4) 
         self.password.delete(0,'end')
         self.user_name.delete(0,'end')
-        print("result",type(result))
-        print("face_fund",face_found)
         if result == "True":
-            print("Authorized")
             label_auth = tk.Label(self,text="You Are Authorized")
             label_auth.pack()
             self.controller.show_frame("ThirdPage")
