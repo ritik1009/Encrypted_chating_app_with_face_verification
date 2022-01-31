@@ -164,22 +164,7 @@ def accept_incoming_connections():
         c, client_address = s.accept()
         print ("%s:%s has connected to" % client_address,)
         Thread(target = user_login, args=(c,client_address) ).start()
-        '''while True:
-            c_name,c_pass,option = [i for i in c.recv(2048).decode('utf-8').split('\n')]
-            print(c_name,c_pass," ",option)
-            if option =="sing_up":
-                print(c)
-                server.sing_up(c_name,c_pass,c)
-                print("ended")
-            elif option =="login":
-                ans = server.login(c_name,c_pass,c,client_address)
-                if ans:
-                    break
-            else:
-                print("else")
-                #s.shutdown(socket.SHUT_RDWR)
-                c.close()
-                break'''
+
 def user_login(c,client_address):
         while True:
             c_name,c_pass,option = [i for i in c.recv(2048).decode('utf-8').split('\n')]
